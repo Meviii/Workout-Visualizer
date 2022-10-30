@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>add_workout_view</class>
+ <widget class="QDialog" name="add_workout_view">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>326</width>
+    <height>326</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Exercise - Workout Tracker</string>
+  </property>
+  <widget class="QPushButton" name="back_to_main_view">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>10</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Back</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="title_label">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>46</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;Add Exercise&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="exercise_name_text">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>150</y>
+     <width>141</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Exercise Name</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="add_exercise_button">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>260</y>
+     <width>61</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="exercise_sets_text">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>190</y>
+     <width>141</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Exercise Sets</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="exercise_reps_text">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>230</y>
+     <width>141</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Exercise Reps (eg. 4, 4-6)</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="exercise_workout_label">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>87</y>
+     <width>231</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Adding for Workout: Back &amp; Biceps on Tuesday</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="exercise_add_status">
+   <property name="geometry">
+    <rect>
+     <x>102</x>
+     <y>260</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="workout_combo_box">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>120</y>
+     <width>141</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="placeholderText">
+    <string>Choose a workout</string>
+   </property>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>exercise_name_text</tabstop>
+  <tabstop>exercise_sets_text</tabstop>
+  <tabstop>exercise_reps_text</tabstop>
+  <tabstop>add_exercise_button</tabstop>
+  <tabstop>back_to_main_view</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
