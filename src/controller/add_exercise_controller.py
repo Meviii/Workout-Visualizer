@@ -7,7 +7,7 @@ import logging
 def get_workouts() -> list:
     
     all_workouts = workout_repo.find_all()
-    return [Workout.workout(x[1], x[2], x[0]) for x in all_workouts]
+    return [Workout.workout(x[2], x[1], x[0]) for x in all_workouts]
     
 def add_new_exercise(exercise_name, exercise_sets, exercise_reps, exercise_workout_string) -> bool:
 

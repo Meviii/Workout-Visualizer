@@ -6,7 +6,7 @@ import src.controller.add_exercise_controller as aec
 import src.utility.path as util_path
 
 FILENAME = 'add_exercise_view.ui'
-PATH = util_path.get_path(FILENAME)
+PATH = util_path.get_correct_path_of_designer_files(FILENAME)
 
 class Ui_AddExerciseWindow(QDialog):
     def __init__(self, widget):

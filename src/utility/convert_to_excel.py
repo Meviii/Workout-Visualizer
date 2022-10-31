@@ -1,8 +1,24 @@
 import xlsxwriter
 import openpyxl
+import src.utility.path as util_path
+import os
+import sys
+
+def get_correct_path_of_save_file(file_name):
+    if getattr(sys, 'frozen', False):
+        PATH = os.path.dirname(sys.executable)
+        os.chdir(PATH)
+    elif __file__:
+        PATH = file_name
+
+    return PATH
+
 
 def make_excel(data_workouts, data_exercises, WORKBOOK):
     # create file
+    
+    DIR = get_correct_path_of_save_file(WORKBOOK)
+    
     workbook = xlsxwriter.Workbook(WORKBOOK)
     workbook.close()
     
@@ -16,13 +32,13 @@ def make_excel(data_workouts, data_exercises, WORKBOOK):
 
     sorted_workouts = sort_workout_by_day(data_workouts)
     # store current day for day matching
-    current_day_streak = sorted_workouts[0][1] 
+    current_day_streak = sorted_workouts[0][2]
 
     worksheet.write(row, col, current_day_streak)
     
     workout_row_incrementer = 2
     row_incrementer_for_workout_change = find_available_row(row, col, WORKBOOK) + 1 # + 1 for spacing next workout
-    for w_id, w_day, w_name in (sorted_workouts):
+    for w_id, w_name, w_day in (sorted_workouts):
         
         # if day is same        
         if current_day_streak != w_day:
@@ -44,7 +60,7 @@ def make_excel(data_workouts, data_exercises, WORKBOOK):
                 row_incre += 1
 
         row += row_incrementer_for_workout_change
-    
+        
     workbook.close()
 
 def find_available_row(row, col, WORKBOOK):
@@ -73,7 +89,7 @@ def sort_workout_by_day(workouts_to_sort, sorted_workouts = [], current_day = 0)
     
     # add to final list for current day
     for workout in workouts_to_sort:
-        if str(workout[1]).lower() == DAYS[current_day]:
+        if str(workout[2]).lower() == DAYS[current_day]:
             sorted_workouts.append(workout)
     
     return sort_workout_by_day(workouts_to_sort, sorted_workouts, current_day + 1)

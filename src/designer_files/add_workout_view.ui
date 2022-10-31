@@ -100,6 +100,7 @@
  </widget>
  <tabstops>
   <tabstop>workout_name_text</tabstop>
+  <tabstop>workout_day_combo_box</tabstop>
   <tabstop>add_workout_button</tabstop>
   <tabstop>back_to_main_view</tabstop>
  </tabstops>

@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import *
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 import src.controller.home_controller as hc
@@ -6,7 +6,7 @@ import src.view.view_loader as view_loader
 import src.utility.path as util_path
 
 FILENAME = 'home_view.ui'
-PATH = util_path.get_path(FILENAME)
+PATH = util_path.get_correct_path_of_designer_files(FILENAME)
 
 class Ui_HomeWindow(QDialog):
     def __init__(self, widget):
@@ -19,18 +19,28 @@ class Ui_HomeWindow(QDialog):
         self.get_and_print_workouts()
         
         if self.can_add_exercise_button():
-            cur_button = QPushButton("Add Exercise", self)
-            cur_button.setObjectName("home_add_exercise_button")
-            cur_button.setGeometry(40, 540, 140, 40)
-            cur_button.clicked.connect(self.add_exercise_clicked)
+            exercise_button = QPushButton("Add Exercise", self)
+            exercise_button.setObjectName("home_add_exercise_button")
+            exercise_button.setGeometry(40, 540, 140, 40)
+            exercise_button.clicked.connect(self.add_exercise_clicked)
 
+        if self.can_add_duplicate_workout_button():
+            workout_button = QPushButton("Add Workout", self)
+            workout_button.setObjectName("home_duplicate_workout_button")
+            workout_button.setGeometry(40, 640, 140, 40)
+            workout_button.clicked.connect(self.duplicate_workout_clicked)
+        
         self._buttons()
         
     def _buttons(self):
         self.home_add_workout_button.clicked.connect(self.add_workout_clicked)
         self.home_clear_button.clicked.connect(self.clear_all_clicked)
         self.home_create_button.clicked.connect(self.create_clicked)
-        
+    
+    def can_add_duplicate_workout_button(self) -> bool:
+        print("TODO")
+        return False
+    
     def add_exercise_clicked(self):
         view_loader.load_add_exercise_view(self)
     

@@ -41,7 +41,8 @@ class Ui_add_workout_view(object):
         self.workout_day_combo_box = QComboBox(add_workout_view)
         self.workout_day_combo_box.setObjectName(u"workout_day_combo_box")
         self.workout_day_combo_box.setGeometry(QRect(100, 160, 141, 22))
-        QWidget.setTabOrder(self.workout_name_text, self.add_workout_button)
+        QWidget.setTabOrder(self.workout_name_text, self.workout_day_combo_box)
+        QWidget.setTabOrder(self.workout_day_combo_box, self.add_workout_button)
         QWidget.setTabOrder(self.add_workout_button, self.back_to_main_view)
 
         self.retranslateUi(add_workout_view)

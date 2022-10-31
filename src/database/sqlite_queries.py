@@ -4,28 +4,19 @@ from sqlite3 import Error
 import string
 import sys
 import os
+import src.utility.path as util_path
 
-FILENAME = 'sqlite_db.db'
-# Path to database
-if getattr(sys, 'frozen', False):
-    APP_PATH = os.path.dirname(sys.executable)
-elif __file__:
-    # APP_PATH = "src\database\sqlite_db.db"
-    APP_PATH = os.path.dirname(__file__)
 
-PATH = os.path.join(APP_PATH, FILENAME)
-
-try:
-    os.chdir(sys._MEIPASS)
-    print(sys._MEIPASS)
-except:
-    pass
+DB_FILENAME = 'sqlite_db.db'
+SQL_SCRIPT_FILENAME = 'sql_script.db'
+DB_PATH = util_path.get_correct_path_of_db(DB_FILENAME)
+SQL_PATH = util_path.get_correct_path_of_db(SQL_SCRIPT_FILENAME)
 
 def create_db_if_can():
     con = create_connection()
     cursor = con.cursor()
         
-    with open("sql_script.db", "r") as script_f:
+    with open(SQL_PATH, "r") as script_f:
         sql_script = script_f.read()
     
     cursor.executescript(sql_script)
@@ -36,7 +27,7 @@ def create_db_if_can():
 def create_connection():
     connection = None
     try:
-        connection = sqlite3.connect(PATH)
+        connection = sqlite3.connect(DB_PATH)
         print("Connected to database!")
     except Error as e:
         print(f"Error: {e}")

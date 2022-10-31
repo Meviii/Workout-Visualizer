@@ -16,6 +16,6 @@ Add Workout
 
 ## Contraints
 
-- Make sure the output excel file is closed.
-- Workout names are unique
+- Make sure the "output" excel file is closed.
+- Workout names must be unique
 - Better to split up specific exercises into separate workouts (Eg. Chest. And not Chest & Triceps)
