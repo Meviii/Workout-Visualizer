@@ -3,11 +3,15 @@ from PyQt5.QtWidgets import QWidget, QMainWindow, QDialog, QLabel
 from PyQt5.uic import loadUi
 import src.view.view_loader as view_loader
 import src.controller.add_workout_controller as awc
+import src.utility.path as util_path
+
+FILENAME = 'add_workout_view.ui'
+PATH = util_path.get_path(FILENAME)
 
 class Ui_AddWorkoutWindow(QDialog):
     def __init__(self, widget):
         super(Ui_AddWorkoutWindow, self).__init__()
-        loadUi("src/designer_files/add_workout_view.ui", self)
+        loadUi(PATH, self)
         
         self.widget = widget
         

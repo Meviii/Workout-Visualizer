@@ -3,11 +3,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 import src.controller.home_controller as hc
 import src.view.view_loader as view_loader
+import src.utility.path as util_path
+
+FILENAME = 'home_view.ui'
+PATH = util_path.get_path(FILENAME)
 
 class Ui_HomeWindow(QDialog):
     def __init__(self, widget):
         super(Ui_HomeWindow, self).__init__()
-        loadUi("src/designer_files/home_view.ui", self)
+        loadUi(PATH, self)
         self.widget = widget
         widget.setFixedHeight(600)
         widget.setFixedWidth(800)

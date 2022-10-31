@@ -2,10 +2,36 @@ from enum import Enum, auto
 import sqlite3
 from sqlite3 import Error
 import string
+import sys
+import os
 
+FILENAME = 'sqlite_db.db'
 # Path to database
-PATH = "src\database\sqlite_db.db"
+if getattr(sys, 'frozen', False):
+    APP_PATH = os.path.dirname(sys.executable)
+elif __file__:
+    # APP_PATH = "src\database\sqlite_db.db"
+    APP_PATH = os.path.dirname(__file__)
 
+PATH = os.path.join(APP_PATH, FILENAME)
+
+try:
+    os.chdir(sys._MEIPASS)
+    print(sys._MEIPASS)
+except:
+    pass
+
+def create_db_if_can():
+    con = create_connection()
+    cursor = con.cursor()
+        
+    with open("sql_script.db", "r") as script_f:
+        sql_script = script_f.read()
+    
+    cursor.executescript(sql_script)
+    con.commit()
+    con.close()
+    
 # Creats a connection to the database
 def create_connection():
     connection = None
@@ -153,3 +179,6 @@ def get_columns_of_table(table) -> list:
         result_col_names.append(i[1])
     
     return result_col_names
+
+
+create_db_if_can()
