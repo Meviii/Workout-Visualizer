@@ -41,11 +41,26 @@ class Ui_AddExerciseWindow(QDialog):
         exercise_sets = self.exercise_sets_text.text()
         exercise_workouts = self.workout_combo_box.currentText()
         
-        if exercise_name == "" or exercise_reps == "" or exercise_sets == "":
-            self.exercise_add_status.setText("Empty fields")
-        else:
-            aec.add_new_exercise(exercise_name, exercise_sets, exercise_reps, exercise_workouts)
-            self.exercise_add_status.setText("Added")
+        # if empty fields
+        if exercise_name == "" or exercise_reps == "" or exercise_sets == "" or exercise_workouts == "":
+                self.exercise_add_status.setText("Empty fields")
+                return
+        
+        # if incorrect data types
+        worker = exercise_reps
+        if "-" in exercise_reps:
+            worker = str(exercise_reps).replace("-", "")
+        
+        if str(worker).isdigit() == False or str(exercise_sets).isdigit() == False:
+            self.exercise_add_status.setText("Incorrect fields")
+            return
+        
+        # if failed to add exercise
+        if not aec.add_new_exercise(exercise_name, exercise_sets, exercise_reps, exercise_workouts):
+            self.exercise_add_status.setText("Failed to add")
+            return
+            
+        self.exercise_add_status.setText("Added")
         
     def back_button_clicked(self):
         view_loader.load_home_view(self)

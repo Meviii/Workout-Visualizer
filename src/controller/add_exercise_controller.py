@@ -11,13 +11,13 @@ def get_workouts() -> list:
     
 def add_new_exercise(exercise_name, exercise_sets, exercise_reps, exercise_workout_string) -> bool:
 
-    workout_name, workout_day = _workout_string_tokeniser(exercise_workout_string)
-    
-    workout_id = workout_repo.find_id_by_name_and_day(workout_name = workout_name, workout_day = workout_day)
-
-    exercise_to_add = Exercise.exercise(exercise_name, exercise_sets, exercise_reps, workout_id[0][0])
-    
     try:
+        workout_name, workout_day = _workout_string_tokeniser(exercise_workout_string)
+    
+        workout_id = workout_repo.find_id_by_name_and_day(workout_name = workout_name, workout_day = workout_day)
+
+        exercise_to_add = Exercise.exercise(exercise_name, exercise_sets, exercise_reps, workout_id[0][0])
+        
         exercise_repo.save(exercise_to_add)
         return True
     except Exception as e:

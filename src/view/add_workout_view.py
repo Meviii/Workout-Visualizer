@@ -35,15 +35,26 @@ class Ui_AddWorkoutWindow(QDialog):
         workout_name = self.workout_name_text.text()
         workout_day = self.workout_day_combo_box.currentText()
 
+        # if fields are empty
         if workout_name == "" or workout_day == "":
             self.add_status_label.setText("Empty fields")
-        elif not awc.can_add_new_workout(workout_name):
+            return
+        
+        # if not correcty datatype
+        if str(workout_name).isdigit() == False:
+            self.add_status_label.setText("Incorrect fields")
+            return
+        
+        # if workout_name is not unique
+        if not awc.can_add_new_workout(workout_name):
             self.add_status_label.setText("Duplicate")
-        elif awc.can_add_new_workout(workout_name):
-            if not (awc.add_new_workout(workout_name, workout_day)):
-                self.add_status_label.setText("Couldn't add")
-            else:
-                self.add_status_label.setText("Added")
+        
+        # if adding new workout failed
+        if not (awc.add_new_workout(workout_name, workout_day)):
+            self.add_status_label.setText("Failed to add")
+            return
+        
+        self.add_status_label.setText("Added")
         
     def back_button_clicked(self):
         view_loader.load_home_view(self)

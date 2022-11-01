@@ -3,6 +3,7 @@ import src.model.Workout as Workout
 import src.repository.workout_repository as workout_repo
 
 def can_add_new_workout(workout_name) -> bool:
+    
     if workout_repo.find_by_name(workout_name) != []:
         return False
     return True

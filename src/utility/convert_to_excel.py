@@ -4,16 +4,24 @@ from openpyxl.styles.alignment import Alignment
 # import src.utility.path as util_path
 import os
 import sys
+import logging
 
-def change_to_correct_dir():
-    if getattr(sys, 'frozen', False):
-        PATH = os.path.dirname(sys.executable)
-        os.chdir(PATH)
-
+def change_to_correct_dir() -> bool:
+    try:
+        if getattr(sys, 'frozen', False):
+            PATH = os.path.dirname(sys.executable)
+            os.chdir(PATH)
+            return True
+    except:
+        return False
+        
 def make_excel(data_workouts, data_exercises, WORKBOOK) -> bool:
-    # create file
     
-    change_to_correct_dir()
+    # create file
+    if not change_to_correct_dir():
+        logging.warning()
+        return False
+    
     try:
         workbook = xlsxwriter.Workbook(WORKBOOK)
         workbook.close()
@@ -37,6 +45,10 @@ def make_excel(data_workouts, data_exercises, WORKBOOK) -> bool:
     
     workout_row_incrementer = 2
     row_incrementer_for_workout_change = find_available_row(row, col, WORKBOOK) + 1 # + 1 for spacing next workout
+    
+    if row_incrementer_for_workout_change == -1 + 1: # -1 = couldn't find, + 1 for spacing
+        return False
+    
     for w_id, w_name, w_day in (sorted_workouts):
         
         # if day is same        
@@ -62,11 +74,17 @@ def make_excel(data_workouts, data_exercises, WORKBOOK) -> bool:
         
     workbook.close()
     
-    fix_formatting(WORKBOOK)
+    if fix_formatting(WORKBOOK) == False:
+        return False
 
-def find_available_row(row, col, WORKBOOK):
-    workbook = openpyxl.load_workbook(WORKBOOK)
+def find_available_row(row, col, WORKBOOK) -> bool:
+    try:
+        workbook = openpyxl.load_workbook(WORKBOOK)
+    except:
+        return False
+    
     worksheet = workbook.active
+    
     SAFE_RANGE = 4
     
     is_safe = False
@@ -78,6 +96,8 @@ def find_available_row(row, col, WORKBOOK):
                 is_safe = True
                 return row
         row += SAFE_RANGE
+    
+    return -1
 
 def sort_workout_by_day(workouts_to_sort, sorted_workouts = [], current_day = 0):
     
@@ -95,9 +115,13 @@ def sort_workout_by_day(workouts_to_sort, sorted_workouts = [], current_day = 0)
     
     return sort_workout_by_day(workouts_to_sort, sorted_workouts, current_day + 1)
 
-def fix_formatting(WORKBOOK):
-    workbook = openpyxl.load_workbook(WORKBOOK)
-    worksheet = workbook.active
+def fix_formatting(WORKBOOK) -> bool:
+    try:
+        workbook = openpyxl.load_workbook(WORKBOOK)
+        worksheet = workbook.active
+    except:
+        return False
+    
     dims = {}
     for row in worksheet.rows:
         for cell in row:
