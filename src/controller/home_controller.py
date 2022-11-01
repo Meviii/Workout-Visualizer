@@ -35,5 +35,7 @@ def create_to_excel() -> bool:
     if all_workouts == []:
         return False
     
-    make_excel(all_workouts, all_exercises, "output.xlsx")
+    if make_excel(all_workouts, all_exercises, "output.xlsx") == False:
+        return False
+    
     return True

@@ -44,7 +44,7 @@ class Ui_home_view(object):
         self.home_grid_layout.setContentsMargins(0, 0, 0, 0)
         self.home_status_label = QLabel(home_view)
         self.home_status_label.setObjectName(u"home_status_label")
-        self.home_status_label.setGeometry(QRect(490, 550, 81, 21))
+        self.home_status_label.setGeometry(QRect(481, 550, 81, 21))
         self.home_status_label.setAlignment(Qt.AlignCenter)
         QWidget.setTabOrder(self.home_add_workout_button, self.home_create_button)
         QWidget.setTabOrder(self.home_create_button, self.home_clear_button)

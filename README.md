@@ -1,5 +1,9 @@
 # Workout Visualizer
 
+## EXE 
+
+The updated application exe can be found in the __dist__ folder.
+
 ## Models
 
 __Database__: SQLite 
@@ -13,6 +17,9 @@ Main
 Add Exercise
 Add Workout
 
+## TODOs
+
+- Change exercises to a list view
 
 ## Contraints
 
