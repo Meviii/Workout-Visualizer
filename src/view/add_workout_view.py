@@ -40,11 +40,6 @@ class Ui_AddWorkoutWindow(QDialog):
             self.add_status_label.setText("Empty fields")
             return
         
-        # if not correcty datatype
-        if str(workout_name).isdigit() == False:
-            self.add_status_label.setText("Incorrect fields")
-            return
-        
         # if workout_name is not unique
         if not awc.can_add_new_workout(workout_name):
             self.add_status_label.setText("Duplicate")
