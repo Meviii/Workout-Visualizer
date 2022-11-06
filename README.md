@@ -20,6 +20,9 @@ Add Workout
 ## TODOs
 
 - Change exercises to a list view
+- Add delete/duplicate buttons to workouts 
+- Printing in multiple rows for excel workouts
+
 
 ## Contraints
 

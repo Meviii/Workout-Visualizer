@@ -1,10 +1,30 @@
 import xlsxwriter
 import openpyxl
 from openpyxl.styles.alignment import Alignment
-# import src.utility.path as util_path
 import os
 import sys
 import logging
+import src.utility.path as util_path
+
+# # Dummy data
+# hard_coded_workout = [
+#     (1, "Chest", "Monday"),
+#     (2, "Back", "Tuesday"),
+#     (3, "Shoulder", "Wednesday"),
+#     (5, "Chest & Triceps", "Thursday"),
+#     (6, "Back & Biceps", "Friday"),
+#     (7, "Legs & Shoulders", "Saturday"),
+#     (8, "Abs", "Saturday")
+# ]
+# # Dummy data
+# hard_coded_exercises = [
+#     # id, name, sets, rep range, workout id
+#     (1, "Bench Press", "4", "8-12", 1),
+#     (2, "Incline Bench Press", "3", "4-6", 1),
+#     (3, "Box style", "4", "8-12", 3),
+#     (4, "Jog", "3", "4-6", 3)
+# ]
+
 
 def change_to_correct_dir() -> bool:
     try:
@@ -14,14 +34,15 @@ def change_to_correct_dir() -> bool:
             return True
     except:
         return False
-        
+
 def make_excel(data_workouts, data_exercises, WORKBOOK) -> bool:
     
-    # create file
-    if not change_to_correct_dir():
-        logging.warning()
-        return False
+    if (util_path.is_running_executable()):
+        if not change_to_correct_dir():
+            logging.warning("Couldn't change directory when trying to create excel.")
+            return False
     
+    # create file
     try:
         workbook = xlsxwriter.Workbook(WORKBOOK)
         workbook.close()
@@ -36,6 +57,7 @@ def make_excel(data_workouts, data_exercises, WORKBOOK) -> bool:
     row = 4
     col = 2
 
+    # Sort workouts
     sorted_workouts = sort_workout_by_day(data_workouts)
     
     # store current day for day matching
@@ -51,7 +73,7 @@ def make_excel(data_workouts, data_exercises, WORKBOOK) -> bool:
     
     for w_id, w_name, w_day in (sorted_workouts):
         
-        # if day is same        
+        # if current day is not the same as before
         if current_day_streak != w_day:
             row = 4
             col += 4

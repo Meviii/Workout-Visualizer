@@ -43,6 +43,7 @@ class Ui_AddWorkoutWindow(QDialog):
         # if workout_name is not unique
         if not awc.can_add_new_workout(workout_name):
             self.add_status_label.setText("Duplicate")
+            return
         
         # if adding new workout failed
         if not (awc.add_new_workout(workout_name, workout_day)):

@@ -2,6 +2,12 @@ import os
 import string
 import sys
 
+def is_running_executable() -> bool:
+    if getattr(sys, 'frozen', False):
+        return True
+    
+    return False
+
 def get_correct_path_of_designer_files(filename) -> string:
     
     if getattr(sys, 'frozen', False):
