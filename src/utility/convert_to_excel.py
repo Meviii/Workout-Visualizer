@@ -83,7 +83,7 @@ def make_excel(data_workouts, data_exercises, WORKBOOK) -> bool:
         # write workout name
         worksheet.write(row + workout_row_incrementer, col, w_name)
         
-        # for exercises with workout id 
+        # for exercises with workout id
         row_incre = 4
         for e_id, e_name, e_sets, e_reps, e_workout_id in data_exercises:
             if e_workout_id == w_id:

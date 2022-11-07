@@ -22,7 +22,7 @@ Add Workout
 - Change exercises to a list view
 - Add delete/duplicate buttons to workouts 
 - Printing in multiple rows for excel workouts
-
+- Add clear one for removing one workout
 
 ## Contraints
 
