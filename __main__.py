@@ -1,7 +1,6 @@
 from PyQt5 import QtWidgets
 import sys
 import src.view.home_view as home_view
-import os
 
 if __name__ == "__main__":
     

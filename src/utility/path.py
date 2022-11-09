@@ -8,6 +8,15 @@ def is_running_executable() -> bool:
     
     return False
 
+def change_to_correct_dir() -> bool:
+    try:
+        if getattr(sys, 'frozen', False):
+            PATH = os.path.dirname(sys.executable)
+            os.chdir(PATH)
+            return True
+    except:
+        return False
+
 def get_correct_path_of_designer_files(filename) -> string:
     
     if getattr(sys, 'frozen', False):
@@ -15,10 +24,10 @@ def get_correct_path_of_designer_files(filename) -> string:
     else:
         PATH = os.path.join(os.path.dirname("src/designer_files/"), filename)
 
-    try:
-        os.chdir(sys._MEIPASS)
-    except:
-        pass
+        try:
+            os.chdir(sys._MEIPASS)
+        except:
+            pass
     
     return PATH
 
@@ -28,13 +37,15 @@ def get_correct_path_of_db(filename) -> string:
         PATH = filename 
     else:
         PATH = os.path.join(os.path.dirname("src/database/"), filename)
-
-    try:
-        os.chdir(sys._MEIPASS)
-    except:
-        pass
     
     return PATH
+
+def change_to_child() -> bool:
+    try:
+        os.chdir(sys._MEIPASS)
+        return True
+    except:
+        return False
 
 def get_correct_path_of_save_file(filename) -> string:
     

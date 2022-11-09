@@ -2,7 +2,7 @@ import src.model.Exercise as Exercise
 import src.model.Workout as Workout
 import src.repository.workout_repository as workout_repo
 import src.repository.exercise_repository as exercise_repo
-from src.utility.convert_to_excel import make_excel
+from utility.convert_to_excel import MakeExcel
 
 def clear_all():
     workout_repo.delete_all()
@@ -35,7 +35,7 @@ def create_to_excel() -> bool:
     if all_workouts == []:
         return False
     
-    if make_excel(all_workouts, all_exercises, "output.xlsx") == False:
-        return False
+    mak = MakeExcel("output.xlsx", all_workouts, all_exercises, "green")
+    mak.make_excel()
     
     return True

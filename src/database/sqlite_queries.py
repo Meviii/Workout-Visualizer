@@ -6,22 +6,28 @@ import sys
 import os
 import src.utility.path as util_path
 
-
 DB_FILENAME = 'sqlite_db.db'
 SQL_SCRIPT_FILENAME = 'sql_script.db'
 DB_PATH = util_path.get_correct_path_of_db(DB_FILENAME)
 SQL_PATH = util_path.get_correct_path_of_db(SQL_SCRIPT_FILENAME)
 
-def create_db_if_can():
-    con = create_connection()
-    cursor = con.cursor()
+if not util_path.change_to_child():
+    print("couldnt changge to child")
+
+def create_db_if_can() -> bool:
+    try:
+        con = create_connection()
+        cursor = con.cursor()
+        print("Trying to create db at ", SQL_PATH)
+        with open(SQL_PATH, "r") as script_f:
+            sql_script = script_f.read()
         
-    with open(SQL_PATH, "r") as script_f:
-        sql_script = script_f.read()
-    
-    cursor.executescript(sql_script)
-    con.commit()
-    con.close()
+        cursor.executescript(sql_script)
+        con.commit()
+        con.close()
+        return True
+    except:
+        return False
     
 # Creats a connection to the database
 def create_connection():
@@ -170,6 +176,5 @@ def get_columns_of_table(table) -> list:
         result_col_names.append(i[1])
     
     return result_col_names
-
 
 create_db_if_can()
