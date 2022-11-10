@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'home_view.ui'
+## Form generated from reading UI file 'home_view - BACKUP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -52,26 +52,14 @@ class Ui_home_view(object):
         self.home_status_label.setAlignment(Qt.AlignCenter)
         self.scrollArea = QScrollArea(home_view)
         self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setGeometry(QRect(130, 100, 631, 431))
+        self.scrollArea.setGeometry(QRect(40, 100, 721, 431))
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 629, 429))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 719, 429))
         self.gridLayout = QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout.setObjectName(u"gridLayout")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.home_add_workout_button_2 = QPushButton(home_view)
-        self.home_add_workout_button_2.setObjectName(u"home_add_workout_button_2")
-        self.home_add_workout_button_2.setGeometry(QRect(10, 110, 111, 41))
-        self.home_add_workout_button_2.setStyleSheet(u"font: 75 8pt \"MS Shell Dlg 2\";")
-        self.home_add_workout_button_3 = QPushButton(home_view)
-        self.home_add_workout_button_3.setObjectName(u"home_add_workout_button_3")
-        self.home_add_workout_button_3.setGeometry(QRect(10, 170, 111, 41))
-        self.home_add_workout_button_3.setStyleSheet(u"font: 75 8pt \"MS Shell Dlg 2\";")
-        self.home_add_workout_button_4 = QPushButton(home_view)
-        self.home_add_workout_button_4.setObjectName(u"home_add_workout_button_4")
-        self.home_add_workout_button_4.setGeometry(QRect(10, 230, 111, 41))
-        self.home_add_workout_button_4.setStyleSheet(u"font: 75 8pt \"MS Shell Dlg 2\";")
         QWidget.setTabOrder(self.home_add_workout_button, self.home_create_button)
         QWidget.setTabOrder(self.home_create_button, self.home_clear_button)
         QWidget.setTabOrder(self.home_clear_button, self.home_save_button)
@@ -91,8 +79,5 @@ class Ui_home_view(object):
         self.home_save_button.setText(QCoreApplication.translate("home_view", u"Save", None))
         self.home_add_workout_button.setText(QCoreApplication.translate("home_view", u"Add Workout", None))
         self.home_status_label.setText("")
-        self.home_add_workout_button_2.setText(QCoreApplication.translate("home_view", u"Workouts", None))
-        self.home_add_workout_button_3.setText(QCoreApplication.translate("home_view", u"Personal Details", None))
-        self.home_add_workout_button_4.setText(QCoreApplication.translate("home_view", u"Goals", None))
     # retranslateUi
 

@@ -2,7 +2,7 @@ import src.model.Exercise as Exercise
 import src.model.Workout as Workout
 import src.repository.workout_repository as workout_repo
 import src.repository.exercise_repository as exercise_repo
-from utility.convert_to_excel import MakeExcel
+from src.utility.convert_to_excel import MakeExcel
 
 def clear_all():
     workout_repo.delete_all()

@@ -59,7 +59,6 @@ class MakeExcel:
         
         # Store first sorted day as current day streak
         self.worksheet.cell(row, col).value = current_day_streak
-        
 
         workout_row_incrementer = 2
         

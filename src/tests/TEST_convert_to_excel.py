@@ -1,7 +1,7 @@
 import xlsxwriter
 import openpyxl
 from openpyxl.styles.alignment import Alignment
-from openpyxl.styles import PatternFill, Font
+from openpyxl.styles import PatternFill, Font, NamedStyle
 import os
 import sys
 import logging
@@ -49,32 +49,23 @@ class Colours:
         
 class MakeExcel:
 
-    def __init__(self, WORKBOOK, data_workouts, data_exercises, cell_colour = "", cell_text_colour = "") -> None:
-        self.WORKBOOK = WORKBOOK
+    def __init__(self, WORKBOOK_NAME, data_workouts, data_exercises, cell_colour = "", cell_text_colour = "") -> None:
+        self.WORKBOOK_NAME = WORKBOOK_NAME
         self.data_workouts = data_workouts
         self.data_exercises = data_exercises
         self.cell_colour = cell_colour
         self.cell_text_colour = cell_text_colour
 
+        self.workbook = openpyxl.Workbook()
+        self.worksheet = self.workbook.active
+        
     def make_excel(self) -> bool:
+        
+        # Move to correct directory if running as exe
         if (util_path.is_running_executable()):
             if not util_path.change_to_correct_dir():
                 logging.warning("Couldn't change directory when trying to create excel.")
                 return False
-        try:
-            # create file
-            workbook = xlsxwriter.Workbook(self.WORKBOOK)
-            workbook.close()
-            
-            # open
-            workbook = xlsxwriter.Workbook(self.WORKBOOK)
-            worksheet = workbook.add_worksheet()
-        except:
-            return False
-        
-        # Starting row/col
-        row = 4
-        col = 2
 
         # Sort workouts
         sorted_workouts = self._sort_workout_by_day(self.data_workouts)
@@ -82,34 +73,42 @@ class MakeExcel:
         # store current day for day matching
         current_day_streak = sorted_workouts[0][2]
 
-        worksheet.write(row, col, current_day_streak)
+        # Starting row/col
+        row = 5
+        col = 3
         
+        # Store first sorted day as current day streak
+        self.worksheet.cell(row, col).value = current_day_streak
+
         workout_row_incrementer = 2
+        
         row_incrementer_for_workout_change = self._find_available_row(row, col) + 1 # + 1 for spacing next workout
         
-        if row_incrementer_for_workout_change == -1 + 1: # -1 = couldn't find, + 1 for spacing
+        if row_incrementer_for_workout_change == -1 + 1: # -1 represents no safe position and + 1 represents spacing 
             return False
         
         for w_id, w_name, w_day in (sorted_workouts):
-
+            
+            # self._cell_styling(col - 1, col + 3, row-1, row-1 + row_incrementer_for_workout_change)
+            
             # if current day is not the same as before
             if current_day_streak != w_day:
-                # self._cell_styling(col, col + 4, row, row + row_incrementer_for_workout_change)
-                row = 4
+                row = 5
                 col += 4
-                worksheet.write(row, col, w_day)
+                self.worksheet.cell(row, col).value = w_day
+                self.worksheet.cell(row, col).style = NamedStyle()
                 current_day_streak = w_day
             
             # write workout name
-            worksheet.write(row + workout_row_incrementer, col, w_name)
+            self.worksheet.cell(row + workout_row_incrementer, col).value = w_name
             
             # for exercises with workout id
             row_incre = 4
             for e_id, e_name, e_sets, e_reps, e_workout_id in self.data_exercises:
                 if e_workout_id == w_id:
-                    worksheet.write(row + row_incre, col, e_name)
-                    worksheet.write(row + row_incre, col + 1, (e_sets + " sets"))
-                    worksheet.write(row + row_incre, col + 2, (e_reps + " reps"))
+                    self.worksheet.cell(row + row_incre, col).value = e_name
+                    self.worksheet.cell(row + row_incre, col + 1).value = (e_sets + " sets")
+                    self.worksheet.cell(row + row_incre, col + 2).value = (e_reps + " reps")
                     row_incre += 1
 
             row += row_incrementer_for_workout_change
@@ -117,25 +116,18 @@ class MakeExcel:
         if self._fix_formatting() == False:
             return False
         
-        workbook.close()
-
+        self.workbook.save(self.WORKBOOK_NAME)
+        self.workbook.close()
         return True
 
     def _find_available_row(self, row, col) -> bool:
-        try:
-            workbook = openpyxl.load_workbook(self.WORKBOOK)
-        except:
-            return False
-        
-        worksheet = workbook.active
-        
         SAFE_RANGE = 4
         
         is_safe = False
         while not is_safe:
-            if (worksheet.cell(row, col).value) == None:
+            if (self.worksheet.cell(row, col).value) == None:
                 for i in range(SAFE_RANGE):
-                    if (worksheet.cell(row + i, col).value) != None:
+                    if (self.worksheet.cell(row + i, col).value) != None:
                         break
                     is_safe = True
                     return row
@@ -161,12 +153,6 @@ class MakeExcel:
 
     def _cell_styling(self, start_col, end_col, start_row, end_row) -> bool:
         
-        try:
-            workbook = openpyxl.load_workbook(self.WORKBOOK)
-            worksheet = workbook.active
-        except:
-            return False
-        
         # make default colour if no colour is passed
         wanted_cell_colour = PatternFill("solid", start_color="FFFFFF") # white
 
@@ -177,30 +163,21 @@ class MakeExcel:
                     wanted_cell_colour = style
                 
         # colour cells
-        for row in worksheet.iter_rows(min_row=start_row, min_col=start_col, max_row=end_row, max_col=end_col):
+        for row in self.worksheet.iter_rows(min_row=start_row, min_col=start_col, max_row=end_row, max_col=end_col):
             for cell in row:
                 col_row = f"{cell.column_letter}{cell.row}"
-                worksheet[col_row].fill = wanted_cell_colour
-    
-        workbook.save(self.WORKBOOK)
+                self.worksheet[col_row].fill = wanted_cell_colour
 
     def _fix_formatting(self) -> bool:
         
-        try:
-            workbook = openpyxl.load_workbook(self.WORKBOOK)
-            worksheet = workbook.active
-        except:
-            return False
-        
         dims = {}
-        for row in worksheet.rows:
+        for row in self.worksheet.rows:
             for cell in row:
                 if cell.value:
                     col_row = f"{cell.column_letter}{cell.row}"
-                    worksheet[col_row].alignment = Alignment(horizontal="center")
+                    self.worksheet[col_row].alignment = Alignment(horizontal="center")
                     dims[cell.column_letter] = max((dims.get(cell.column_letter, 0), len(str(cell.value))))
         
         for col, value in dims.items():
-            worksheet.column_dimensions[col].width = value * 1.15
-    
-        workbook.save(self.WORKBOOK)
+            self.worksheet.column_dimensions[col].width = value * 1.15
+

@@ -33,4 +33,4 @@ class workout:
         self.exercises = exercises
         
     def __str__(self) -> str:
-        return f"Name: {self.name},\nDay: {self.day}"
+        return f"ID: {self.id}, \nName: {self.name},\nDay: {self.day}"
