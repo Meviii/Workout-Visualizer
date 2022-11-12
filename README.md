@@ -12,6 +12,7 @@ The updated application exe can be found in the __dist__ folder.
 - Add delete/duplicate buttons to workouts
 - Add clear one for removing one workout
 - Possiblity to add background colour to workout and a background colour for all workouts
+- Style/theme flexibility
 
 ## Constraints
 
