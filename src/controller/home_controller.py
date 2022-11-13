@@ -3,6 +3,7 @@ import src.model.Workout as Workout
 import src.repository.workout_repository as workout_repo
 import src.repository.exercise_repository as exercise_repo
 from src.utility.convert_to_excel import MakeExcel
+# from src.tests.TEST_convert_to_excel import MakeExcel
 
 def clear_all():
     workout_repo.delete_all()
@@ -32,9 +33,19 @@ def create_to_excel() -> bool:
     all_workouts = workout_repo.find_all()
     all_exercises = exercise_repo.find_all()
     
+    # if workouts are empty
     if all_workouts == []:
         return False
     
+    # if a workout has no exercises, return false
+    for workout in all_workouts:
+        cur_exercise_count = 0
+        for exercise in all_exercises:
+            if exercise[4] == workout[0]:
+                cur_exercise_count += 1
+        if cur_exercise_count == 0:
+            return False
+        
     mak = MakeExcel("output.xlsx", all_workouts, all_exercises, "green")
     mak.make_excel()
     

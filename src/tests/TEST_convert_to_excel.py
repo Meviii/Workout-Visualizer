@@ -55,12 +55,11 @@ class Colours:
     
 class MakeExcel:
 
-    def __init__(self, WORKBOOK_NAME, data_workouts, data_exercises, cell_colour = "", cell_text_colour = "") -> None:
+    def __init__(self, WORKBOOK_NAME, data_workouts, data_exercises, sheet_theme = "") -> None:
         self.WORKBOOK_NAME = WORKBOOK_NAME
         self.data_workouts = data_workouts
         self.data_exercises = data_exercises
-        self.cell_colour = cell_colour
-        self.cell_text_colour = cell_text_colour
+        self.sheet_theme = sheet_theme
 
         self.workbook = openpyxl.Workbook()
         self.worksheet = self.workbook.active
@@ -84,118 +83,72 @@ class MakeExcel:
         col = 3
         
         # Store first sorted day as current day streak
-        self.worksheet.cell(row, col).value = current_day_streak
+        self._write_workout_day(row, col, current_day_streak)
         
-        self.worksheet.cell(row, col).style = "Headline 1"
-        
-        # fill heading with colour
-        for i in range(0,3):
-            self.worksheet.cell(row, col + i).fill = PatternFill("solid", start_color="FFC000")
-            
-        workout_row_incrementer = 2
+        # Fill title with colour
+        self._fill_header_with_color(row, col)
         
         row_incrementer_for_workout_change = self._find_available_row(row, col) + 1 # + 1 for spacing next workout
-        
         if row_incrementer_for_workout_change == -1 + 1: # -1 represents no safe position and + 1 represents spacing 
             return False
         
-        idx_counter = 0
-        first_table_start_cell = "C9"
-        first_table_end_cell = "E9"
-        table_default_row_number = 9
+        WORKOUT_ROW_INCREMENTER = 2
+        default_table_start_cell = "C9"
+        default_table_end_cell = "E9"
+        TABLE_DEFAULT_ROW = 9
         prev_col = 0
         prev_table_size_ref = ""
-        for w_id, w_name, w_day in (sorted_workouts):
+        for idx_counter, (w_id, w_name, w_day) in enumerate(sorted_workouts):
             
             # if current day is not the same as before
             if current_day_streak != w_day:
                 row = 5
                 col += 4
-                self.worksheet.cell(row, col).value = w_day
-                self.worksheet.cell(row, col).style = "Headline 1"
-                table_default_row_number = 9
-                # fill heading with colour
-                for i in range(0,3):
-                    self.worksheet.cell(row, col + i).fill = PatternFill("solid", start_color="FFC000")
+                self._write_workout_day(row, col, w_day)
+                self._fill_header_with_color(row, col)
                 current_day_streak = w_day
             
             # write workout label
-            self.worksheet.cell(row + workout_row_incrementer, col).value = "Workout:"
-            self.worksheet.cell(row + workout_row_incrementer, col).style = "Headline 2"
+            self._write_workout_label(row + WORKOUT_ROW_INCREMENTER, col)
             
             # write workout name
-            self.worksheet.cell(row + workout_row_incrementer, col + 1).value = w_name
-            self.worksheet.cell(row + workout_row_incrementer, col + 1).font = Font(b=True)#, size=16)
+            self._write_workout_name(row + WORKOUT_ROW_INCREMENTER, col + 1, w_name)
             
             # for exercises with the current workout id
             row_incre = 5
-            exercise_data_columns = ["Exercises", "Sets", "Reps"]
-            for idx, column in enumerate(exercise_data_columns):
-                self.worksheet.cell(row + row_incre - 1, col + idx).value = str(column)
-                self.worksheet.cell(row + row_incre - 1, col + idx).font = Font(color="FFFFFF", size=13)
-            print(f"new column start at {col}")
-            exercise_count = 0
-            for e_id, e_name, e_sets, e_reps, e_workout_id in self.data_exercises:
-                if e_workout_id == w_id:
-                    self.worksheet.cell(row + row_incre, col).value = e_name
-                    self.worksheet.cell(row + row_incre, col + 1).value = str(e_sets)
-                    self.worksheet.cell(row + row_incre, col + 2).value = str(e_reps)
-                    row_incre += 1
-                    exercise_count += 1
-                
-            # make table
+            self._write_exercise_columns(row + row_incre - 1, col)
+            
+            # write exercises
+            row_incre, exercise_count = self._write_exercises_of_workout_id(row, col, row_incre, w_id)
+    
+            # find ref for table creation
             if exercise_count != 0 and col != prev_col:
-
-                if first_table_start_cell[1].isalpha():
-                    table_size_ref = f"{first_table_start_cell}:{first_table_end_cell[0:2]}{int(first_table_end_cell[2:]) + exercise_count + 1}"
-                else:
-                    table_size_ref = f"{first_table_start_cell}:{first_table_end_cell[0]}{int(first_table_end_cell[1:]) + exercise_count + 1}"
-                
-                print(table_size_ref)
-                
-                alphabet = [chr(i) for i in range(65,91)]
-                NEXT_WORKOUT_ROW = 4
-                if first_table_start_cell[1].isalpha():
-                    new_table_char_start = "A" + chr(ord(first_table_start_cell[1]) + NEXT_WORKOUT_ROW)
-                    new_table_char_end = "A" + chr(ord(first_table_end_cell[1]) + NEXT_WORKOUT_ROW)
-                else:
-                    new_table_char_start = chr(ord(first_table_start_cell[0]) + NEXT_WORKOUT_ROW)
-                    new_table_char_end = chr(ord(first_table_end_cell[0]) + NEXT_WORKOUT_ROW)
-
-                if ord(first_table_start_cell[0]) + NEXT_WORKOUT_ROW >= 91:
-                    new_table_char_start = "A" + alphabet[abs(ord(new_table_char_start) - 91)]
-                    new_table_char_end = "A" + alphabet[abs(ord(new_table_char_end) - 91)]
-                
-                first_table_start_cell = f"{new_table_char_start}{table_default_row_number}"
-                first_table_end_cell = f"{new_table_char_end}{table_default_row_number}"
+                print("in")
+                table_size_ref, new_table_char_start, new_table_char_end = self._ref_finder(default_table_start_cell, default_table_end_cell, exercise_count)
                 prev_table_size_ref = table_size_ref
-            else:
+                
+                default_table_start_cell = f"{new_table_char_start}{TABLE_DEFAULT_ROW}"
+                default_table_end_cell = f"{new_table_char_end}{TABLE_DEFAULT_ROW}"
+            elif exercise_count != 0 and col == prev_col:
                 print("in else")
                 table_size_ref = prev_table_size_ref
-                token_string = table_size_ref.split(":")
+                token_string_array = table_size_ref.split(":")
 
-                final = ""
-                for i,v in enumerate(token_string):
-                    
-                    if v[1].isalpha():
-                        cur_string = v[0:2] + str(int(v[2:]) + row_incrementer_for_workout_change)
-                    else:
-                        cur_string = v[0] + str(int(v[1:]) + row_incrementer_for_workout_change)
-                    
-                    if i != 1:
-                        final += (cur_string) + ":"
-                    else:
-                        final += (cur_string)
-                        
-                    cur_string = ""
-                
-                table_size_ref = final
-                
+                table_size_ref = self._table_ref_for_same_day(row_incrementer_for_workout_change, token_string_array)
+            else:
+                pass
+                # self._skip_workout_day_ref()
+                # tmp, new_table_char_start, new_table_char_end = self._ref_finder(default_table_start_cell, default_table_end_cell, exercise_count)
+                # default_table_start_cell = f"{new_table_char_start}{TABLE_DEFAULT_ROW}"
+                # default_table_end_cell = f"{new_table_char_end}{TABLE_DEFAULT_ROW}"
+            
+            print(table_size_ref)
+            
+            # create table
             self._make_table(f"Table{idx_counter}", table_size_ref)
             
-            table_default_row_number = 16
+            # increments and new values
             row += row_incrementer_for_workout_change
-            idx_counter += 1
             if col != prev_col:
                 prev_col = col
                 
@@ -206,8 +159,91 @@ class MakeExcel:
         self.workbook.close()
         return True
 
+    # writes the exercises of a workout id
+    # Returns tuple of new row_incre and the amount of exercises
+    def _write_exercises_of_workout_id(self, row, col, row_incre, workout_id) -> tuple:
+        
+        exercise_count = 0
+        for e_id, e_name, e_sets, e_reps, e_workout_id in self.data_exercises:
+            if e_workout_id == workout_id:
+                self.worksheet.cell(row + row_incre, col).value = e_name
+                self.worksheet.cell(row + row_incre, col + 1).value = str(e_sets)
+                self.worksheet.cell(row + row_incre, col + 2).value = str(e_reps)
+                row_incre += 1
+                exercise_count += 1
+
+        return (row_incre, exercise_count) 
+        
+    def _fill_header_with_color(self, row, col):
+        WORKOUT_MAX_WIDTH = 3
+        
+        for i in range(0, WORKOUT_MAX_WIDTH):
+            self.worksheet.cell(row, col + i).fill = PatternFill("solid", start_color="FFC000")
+    
+    def _write_workout_label(self, row, col):
+        self.worksheet.cell(row, col).value = "Workout:"
+        self.worksheet.cell(row, col).style = "Headline 2"
+    
+    def _write_workout_day(self, row, col, workout_day):
+        self.worksheet.cell(row, col).value = workout_day
+        self.worksheet.cell(row, col).style = "Headline 1"
+        
+    def _write_workout_name(self, row, col, workout_name):
+        self.worksheet.cell(row, col).value = workout_name
+        self.worksheet.cell(row, col).font = Font(b=True)
+        
+    def _write_exercise_columns(self, row, col):
+        EXERCISE_DATA_COLUMNS = ["Exercises", "Sets", "Reps"]
+        for idx, column in enumerate(EXERCISE_DATA_COLUMNS):
+            self.worksheet.cell(row, col + idx).value = str(column)
+            self.worksheet.cell(row, col + idx).font = Font(color="000000", size=13, b=True)
+    
+    # returns ref, and the new table chars for next workout
+    def _ref_finder(self, first_table_start_cell, first_table_end_cell, exercise_count):
+        alphabet = [chr(i) for i in range(65,91)]
+        NEXT_WORKOUT_ROW = 4
+        
+        # if 2 letters
+        if first_table_start_cell[1].isalpha():
+            table_size_ref = f"{first_table_start_cell}:{first_table_end_cell[0:2]}{int(first_table_end_cell[2:]) + exercise_count + 1}"
+        else:
+            table_size_ref = f"{first_table_start_cell}:{first_table_end_cell[0]}{int(first_table_end_cell[1:]) + exercise_count + 1}"
+        
+        # if 2 letters
+        if first_table_start_cell[1].isalpha():
+            new_table_char_start = "A" + chr(ord(first_table_start_cell[1]) + NEXT_WORKOUT_ROW)
+            new_table_char_end = "A" + chr(ord(first_table_end_cell[1]) + NEXT_WORKOUT_ROW)
+        else:
+            new_table_char_start = chr(ord(first_table_start_cell[0]) + NEXT_WORKOUT_ROW)
+            new_table_char_end = chr(ord(first_table_end_cell[0]) + NEXT_WORKOUT_ROW)
+        
+        # if Z
+        if ord(first_table_start_cell[0]) + NEXT_WORKOUT_ROW >= 91:
+            new_table_char_start = "A" + alphabet[abs(ord(new_table_char_start) - 91)]
+            new_table_char_end = "A" + alphabet[abs(ord(new_table_char_end) - 91)]
+
+        return (table_size_ref, new_table_char_start, new_table_char_end)
+    
+    def _table_ref_for_same_day(self, row_incrementer_for_workout_change, token_string_array):
+        table_ret_to_return = ""
+        for i,v in enumerate(token_string_array):
+            
+            if v[1].isalpha():
+                cur_string = v[0:2] + str(int(v[2:]) + row_incrementer_for_workout_change)
+            else:
+                cur_string = v[0] + str(int(v[1:]) + row_incrementer_for_workout_change)
+            
+            if i != 1:
+                table_ret_to_return += (cur_string) + ":"
+            else:
+                table_ret_to_return += (cur_string)
+                
+            cur_string = ""
+        return table_ret_to_return
+        
     def _make_table(self, name, ref, style_name=""):
-        table = Table(displayName=name, ref=ref)
+        table = Table(displayName=name, ref=ref, headerRowCount=0)
+        
         
         if style_name == "":
             style_name = "TableStyleMedium14"
@@ -276,7 +312,4 @@ class MakeExcel:
                     dims[cell.column_letter] = max((dims.get(cell.column_letter, 0), len(str(cell.value))))
         
         for col, value in dims.items():
-            self.worksheet.column_dimensions[col].width = value * 1.25
-
-m = MakeExcel(WORKBOOK, hard_coded_workout, hard_coded_exercises)
-m.make_excel()
+            self.worksheet.column_dimensions[col].width = value * 1.60

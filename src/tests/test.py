@@ -1,22 +1,10 @@
 
 
-table_size_ref = "A13:C16"
-builder = table_size_ref.split(":")
-
-final = ""
-for i,v in enumerate(builder):
+# for workout in all_workouts:
+#     cur_exercise_count = 0
+#     for exercise in all_exercises:
+#         if exercise.workout_id == workout.id:
+#             cur_exercise_count += 1
     
-    if v[1].isalpha():
-        cur_string = v[0:2] + str(int(v[2:]) + 3)
-    else:
-        cur_string = v[0] + str(int(v[1:]) + 3)
-    
-    if i != 1:
-        final += (cur_string) + ":"
-    else:
-        final += (cur_string)
-        
-    cur_string = ""
-
-print(final)
-    
+#     if cur_exercise_count == 0:
+#         return False
