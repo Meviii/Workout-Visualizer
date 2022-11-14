@@ -36,3 +36,8 @@ class exercise:
     def set_reps(self, reps) -> None:
         self.reps = reps
     
+    def set_workout_id(self, w_id) -> None:
+        self.workout_id = w_id
+    
+    def __str__(self) -> str:
+        return f"ID: {self.id}, \nName: {self.name},\nSets: {self.sets},\nReps: {self.reps},\nWorkout ID: {self.workout_id}"

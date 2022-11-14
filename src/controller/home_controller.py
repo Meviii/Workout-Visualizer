@@ -20,13 +20,18 @@ def get_exercises() -> list:
     
     return [Exercise.exercise(x[1], x[2], x[3], x[4]) for x in all_exercises]
 
-def get_workout_id_by_name(workout_name, workout_day) -> int:
-    result = workout_repo.find_id_by_name_and_day(workout_name, workout_day)[0][0]
+def get_workout_id_by_name_and_day(workout_name, workout_day) -> int:
+    try:
+        result = workout_repo.find_id_by_name_and_day(workout_name, workout_day)
+        workout_id = [i[0] for i in result if result != []]
+
+    except Exception as e:
+        return False
     
-    if result == []:
+    if workout_id == []:
         return -1
     
-    return result
+    return workout_id[0]
 
 def create_to_excel() -> bool:
     
@@ -50,3 +55,11 @@ def create_to_excel() -> bool:
     mak.make_excel()
     
     return True
+
+def delete_workout(workout_to_delete) -> bool:
+    try:
+        print(workout_to_delete.id)
+        workout_repo.delete_by_id(workout_to_delete.id)
+        return True
+    except Exception as e:
+        return False

@@ -31,24 +31,24 @@ class Ui_AddWorkoutWindow(QDialog):
         self.back_to_main_view.clicked.connect(self.back_button_clicked)
         self.add_workout_button.clicked.connect(self.add_workout_button_clicked)
     
-    def add_workout_button_clicked(self):
+    def add_workout_button_clicked(self) -> bool:
         workout_name = self.workout_name_text.text()
         workout_day = self.workout_day_combo_box.currentText()
 
         # if fields are empty
         if workout_name == "" or workout_day == "":
             self.add_status_label.setText("Empty fields")
-            return
+            return False
         
         # if workout_name is not unique
-        if not awc.can_add_new_workout(workout_name):
-            self.add_status_label.setText("Duplicate")
-            return
+        if not awc.can_add_new_workout(workout_name, workout_day):
+            self.add_status_label.setText("Already Added")
+            return False
         
         # if adding new workout failed
         if not (awc.add_new_workout(workout_name, workout_day)):
             self.add_status_label.setText("Failed to add")
-            return
+            return False
         
         self.add_status_label.setText("Added")
         

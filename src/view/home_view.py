@@ -25,22 +25,12 @@ class Ui_HomeWindow(QDialog):
             exercise_button.setGeometry(40, 540, 140, 40)
             exercise_button.clicked.connect(self.add_exercise_clicked)
 
-        if self.can_add_duplicate_workout_button():
-            workout_button = QPushButton("Add Workout", self)
-            workout_button.setObjectName("home_duplicate_workout_button")
-            workout_button.setGeometry(40, 640, 140, 40)
-            workout_button.clicked.connect(self.duplicate_workout_clicked)
-        
         self._buttons()
         
     def _buttons(self):
         self.home_add_workout_button.clicked.connect(self.add_workout_clicked)
         self.home_clear_button.clicked.connect(self.clear_all_clicked)
         self.home_create_button.clicked.connect(self.create_clicked)
-    
-    def can_add_duplicate_workout_button(self) -> bool:
-        print("TODO")
-        return False
     
     def add_exercise_clicked(self):
         view_loader.load_add_exercise_view(self)
@@ -71,19 +61,6 @@ class Ui_HomeWindow(QDialog):
         all_workouts = hc.get_workouts()
         all_exercises = hc.get_exercises()
         
-        # # Create Scroll Area
-        # self.scrollArea = QScrollArea(self)
-        # self.scrollArea.setObjectName(u"scrollArea")
-        # self.scrollArea.setGeometry(QRect(40, 100, 721, 431))
-        # self.scrollArea.setWidgetResizable(True)
-        # self.scrollAreaWidgetContents = QWidget()
-        # self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        # self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 719, 429))
-        
-        # # Create Grid Layout
-        # self.gridLayout = QGridLayout(self.scrollAreaWidgetContents)
-        # self.gridLayout.setObjectName(u"gridLayout")
-        
         # Add each Workout
         row = 0
         col = 0
@@ -99,9 +76,9 @@ class Ui_HomeWindow(QDialog):
                 self._create_per_workout(row, col, all_workouts[w_idx], current_exercises, w_idx)
                 col += 1
         
-        # Set Scroll Area widget
-        # self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        
+    def _duplicate_workout(self, current_workout, current_exercises):
+        view_loader.load_duplicate_workout_view(self, current_workout, current_exercises)
+    
     def _create_per_workout(self, row, col, curr_workout, curr_exercises, current_idx):
         
         # Frame Per Workout
@@ -116,17 +93,33 @@ class Ui_HomeWindow(QDialog):
         # Label Per Workout
         self.label = QLabel(self.frame)
         self.label.setObjectName(f"label_{current_idx}")
-        self.label.setGeometry(QRect(50, 10, 130, 31))
+        self.label.setGeometry(QRect(50, 10, 130, 30))
         self.label.setText(f"{curr_workout.name} on {curr_workout.day}\n")
         
         # Exercise List Per Workout
         self.listWidget = QListWidget(self.frame)
         self.listWidget.setObjectName(f"listWidget_{current_idx}")
-        self.listWidget.setGeometry(QRect(10, 50, 160, 125))
+        self.listWidget.setGeometry(QRect(10, 30, 160, 120))
         
         for exercise in curr_exercises:
             self.listWidget.addItem((f"{exercise.name}, {exercise.sets} sets, {exercise.reps} reps\n"))
         
+        duplicate_button = QPushButton("Duplicate", self.frame)
+        duplicate_button.setObjectName(f"workout_dup_button_{current_idx}")
+        duplicate_button.setGeometry(QRect(10, 155, 50, 20))
+        duplicate_button.clicked.connect(lambda: self._duplicate_workout(curr_workout, curr_exercises))
+        
+        delete_button = QPushButton("Delete", self.frame)
+        delete_button.setObjectName(f"workout_dup_button_{current_idx}")
+        delete_button.setGeometry(QRect(70, 155, 50, 20))
+        delete_button.clicked.connect(lambda: self._delete_workout(curr_workout))
+        
         # Add frame to Grid Layout
         self.gridLayout.addWidget(self.frame, row, col, 1, 1, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
-    
+
+    def _delete_workout(self, workout_to_delete):
+        if not hc.delete_workout(workout_to_delete):
+            self.home_status_label.setText("Couldn't delete")
+            return False
+        
+        view_loader.load_home_view(self)
