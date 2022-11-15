@@ -35,14 +35,17 @@
   <widget class="QLabel" name="title_label">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>46</y>
+     <x>85</x>
+     <y>66</y>
      <width>171</width>
      <height>51</height>
     </rect>
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;Add Exercise&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLineEdit" name="exercise_name_text">
@@ -95,19 +98,6 @@
    </property>
    <property name="placeholderText">
     <string>Exercise Reps (eg. 4, 4-6)</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="exercise_workout_label">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>87</y>
-     <width>231</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Adding for Workout: Back &amp; Biceps on Tuesday</string>
    </property>
   </widget>
   <widget class="QLabel" name="exercise_add_status">

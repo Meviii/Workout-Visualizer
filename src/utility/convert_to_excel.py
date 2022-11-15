@@ -27,28 +27,29 @@ class Colours:
         "light blue" : PatternFill("solid", start_color="000066CC"),
     }
     
-class MakeExcel:
-
+class MakeExcel(object):
+    
     def __init__(self, WORKBOOK_NAME, data_workouts, data_exercises, sheet_theme = "") -> None:
         self.WORKBOOK_NAME = WORKBOOK_NAME
         self.data_workouts = data_workouts
         self.data_exercises = data_exercises
         self.sheet_theme = sheet_theme
-
+        
         self.workbook = openpyxl.Workbook()
         self.worksheet = self.workbook.active
-        
+
     def make_excel(self) -> bool:
-        
+
         # Move to correct directory if running as exe
         if (util_path.is_running_executable()):
             if not util_path.change_to_correct_dir():
                 logging.warning("Couldn't change directory when trying to create excel.")
                 return False
-
-        # Sort workouts
-        sorted_workouts = self._sort_workout_by_day(self.data_workouts)
         
+        # Sort workouts
+        # NOTE TO SELF: ALWAYS GIVE PARAMTERES FOR RECURISVE FUNCTIONS EVEN IF THEY HAVE DEFAULT PARAMS
+        sorted_workouts = self._sort_workout_by_day(self.data_workouts, [], 0)
+
         # store current day for day matching
         current_day_streak = sorted_workouts[0][2]
 
@@ -63,15 +64,19 @@ class MakeExcel:
         self._fill_header_with_color(row, col)
         
         row_incrementer_for_workout_change = self._find_available_row(row, col) + 1 # + 1 for spacing next workout
+        # row_incrementer_for_workout_change += 5 #temp
+        
         if row_incrementer_for_workout_change == -1 + 1: # -1 represents no safe position and + 1 represents spacing 
             return False
         
         WORKOUT_ROW_INCREMENTER = 2
         default_table_start_cell = "C9"
         default_table_end_cell = "E9"
+
         TABLE_DEFAULT_ROW = 9
         prev_col = 0
         prev_table_size_ref = ""
+
         for idx_counter, (w_id, w_name, w_day) in enumerate(sorted_workouts):
             
             # if current day is not the same as before
@@ -94,7 +99,7 @@ class MakeExcel:
             
             # write exercises
             row_incre, exercise_count = self._write_exercises_of_workout_id(row, col, row_incre, w_id)
-    
+
             # find ref for table creation
             if exercise_count != 0 and col != prev_col:
                 table_size_ref, new_table_char_start, new_table_char_end = self._ref_finder(default_table_start_cell, default_table_end_cell, exercise_count)
@@ -120,9 +125,10 @@ class MakeExcel:
                 
         if self._fix_formatting() == False:
             return False
-        
+
         self.workbook.save(self.WORKBOOK_NAME)
         self.workbook.close()
+
         return True
 
     # writes the exercises of a workout id
@@ -219,9 +225,8 @@ class MakeExcel:
         table.tableStyleInfo = style
         self.worksheet.add_table(table)
 
-    def _find_available_row(self, row, col) -> bool:
+    def _find_available_row(self, row, col) -> int:
         SAFE_RANGE = 4
-        
         is_safe = False
         while not is_safe:
             if (self.worksheet.cell(row, col).value) == None:
@@ -234,7 +239,7 @@ class MakeExcel:
         
         return -1
 
-    def _sort_workout_by_day(self, workouts_to_sort, sorted_workouts = [], current_day = 0):
+    def _sort_workout_by_day(self, workouts_to_sort, sorted_workouts, current_day):
         
         MAX_DAY_COUNT = 7
         DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]

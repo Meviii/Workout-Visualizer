@@ -17,7 +17,7 @@ The updated application exe can be found in the __dist__ folder.
 ## Constraints
 
 - Make sure the "output" excel file is closed.
-- Workout names must be unique
+- A day cannot have two workouts with the same name
 - Better to split up specific exercises into separate workouts (Eg. Chest. And not Chest & Triceps)
 
 ## Bugs

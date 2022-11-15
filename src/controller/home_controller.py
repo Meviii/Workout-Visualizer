@@ -50,15 +50,16 @@ def create_to_excel() -> bool:
                 cur_exercise_count += 1
         if cur_exercise_count == 0:
             return False
+    try:
+        mak = MakeExcel(f"output.xlsx", all_workouts, all_exercises, "green")
+        mak.make_excel()
+    except Exception as e:
+        return False
         
-    mak = MakeExcel("output.xlsx", all_workouts, all_exercises, "green")
-    mak.make_excel()
-    
     return True
 
 def delete_workout(workout_to_delete) -> bool:
     try:
-        print(workout_to_delete.id)
         workout_repo.delete_by_id(workout_to_delete.id)
         return True
     except Exception as e:

@@ -17,13 +17,13 @@ def add_new_workout(workout_name, workout_day) -> bool:
     except Exception as e:
         return False
 
-def add_exercises_for_workout(workout_id, exercises_of_workout):
+def add_exercises_for_workout(workout_id, exercises_of_workout) -> bool:
     
     try:
         for exercise in exercises_of_workout:
             exercise.set_workout_id(workout_id)
             exercise_repo.save(exercise)
-        
+        return True
     except Exception as e:
         return False
 

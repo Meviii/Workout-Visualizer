@@ -1,9 +1,6 @@
-from enum import Enum, auto
 import sqlite3
 from sqlite3 import Error
 import string
-import sys
-import os
 import src.utility.path as util_path
 
 DB_FILENAME = 'sqlite_db.db'
@@ -12,7 +9,7 @@ DB_PATH = util_path.get_correct_path_of_db(DB_FILENAME)
 SQL_PATH = util_path.get_correct_path_of_db(SQL_SCRIPT_FILENAME)
 
 if not util_path.change_to_child():
-    print("couldnt changge to child")
+    print("Couldn't change to child")
 
 def create_db_if_can() -> bool:
     try:
@@ -70,7 +67,7 @@ def sql_delete_query(table, id) -> bool:
     
     to_return = False
     try:
-        cur.execute(f"DELETE FROM {table} WHERE ID = ?", str(id))
+        cur.execute(f"DELETE FROM {table} WHERE ID = ?", [str(id)])
         to_return = True
         print("Delete complete")
         connection.commit()

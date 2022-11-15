@@ -134,11 +134,41 @@ background-color: rgb(66, 52, 255);</string>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>130</x>
      <y>100</y>
-     <width>721</width>
-     <height>431</height>
+     <width>630</width>
+     <height>430</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>630</width>
+     <height>430</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>630</width>
+     <height>430</height>
+    </size>
+   </property>
+   <property name="lineWidth">
+    <number>0</number>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAsNeeded</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAsNeeded</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustIgnored</enum>
    </property>
    <property name="widgetResizable">
     <bool>true</bool>
@@ -148,12 +178,60 @@ background-color: rgb(66, 52, 255);</string>
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>719</width>
-      <height>429</height>
+      <width>628</width>
+      <height>428</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="home_add_workout_button_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Workouts</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="home_add_workout_button_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Personal Details</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="home_add_workout_button_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Goals</string>
+   </property>
   </widget>
  </widget>
  <tabstops>

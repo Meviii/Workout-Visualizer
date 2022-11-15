@@ -14,7 +14,7 @@ class Ui_AddExerciseWindow(QDialog):
         loadUi(PATH, self)
         
         self.widget = widget
-        
+
         widget.setFixedHeight(326)
         widget.setFixedWidth(326)
 

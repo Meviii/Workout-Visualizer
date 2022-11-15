@@ -40,6 +40,8 @@ class Ui_HomeWindow(QDialog):
             self.home_status_label.setText("Failed to create")
         else:
             self.home_status_label.setText("Created to Excel")
+        
+        
     
     def clear_all_clicked(self):
         hc.clear_all()
@@ -57,7 +59,6 @@ class Ui_HomeWindow(QDialog):
     
     def get_and_print_workouts(self):
         COLUMN_MAX = 3
-        
         all_workouts = hc.get_workouts()
         all_exercises = hc.get_exercises()
         
@@ -72,6 +73,7 @@ class Ui_HomeWindow(QDialog):
                 row += 1
                 col = 0
                 self._create_per_workout(row, col, all_workouts[w_idx], current_exercises, w_idx)
+                col += 1
             else:
                 self._create_per_workout(row, col, all_workouts[w_idx], current_exercises, w_idx)
                 col += 1

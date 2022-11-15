@@ -12,8 +12,7 @@ class Ui_DuplicateWorkoutWindow(QDialog):
     def __init__(self, widget, workout_to_add, exercises_of_workout):
         super(Ui_DuplicateWorkoutWindow, self).__init__()
         loadUi(PATH, self)
-        print(workout_to_add)
-        print(exercises_of_workout)
+
         self.widget = widget
         self.workout_to_add = workout_to_add
         self.exercises_of_workout = exercises_of_workout
