@@ -17,31 +17,10 @@
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">*{
-	border: none;
-	background-color:transparent;
-	background:none;
-	padding:0;
-	margin:0;
-	color:#fff;
-}
-
-#home_view{
-	background-color:#1f232a;
-}
-
-#verticalLayout{
-	background-color:#16191d;
-}
-
-#verticalLayout QPushButton{
-	text-align:left;
-	padding:5px 10px;
-	border-top-left-radius:10px;
-	border-bottom-left-radius:10px;
-}
-
-</string>
+   <string notr="true">border-color: rgb(255, 0, 127);
+color: rgb(38, 255, 34);
+font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+background-color: rgb(66, 52, 255);</string>
   </property>
   <widget class="QLabel" name="home_title_label">
    <property name="geometry">
@@ -72,6 +51,22 @@
     <string>Create</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="home_open_button">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Open </string>
+   </property>
+  </widget>
   <widget class="QPushButton" name="home_clear_button">
    <property name="geometry">
     <rect>
@@ -86,6 +81,22 @@
    </property>
    <property name="text">
     <string>Clear All</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="home_save_button">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>10</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Save</string>
    </property>
   </widget>
   <widget class="QPushButton" name="home_add_workout_button">
@@ -167,93 +178,67 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>630</width>
-      <height>430</height>
+      <width>628</width>
+      <height>428</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
    </widget>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <widget class="QPushButton" name="home_add_workout_button_2">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>100</y>
+     <y>110</y>
      <width>111</width>
-     <height>431</height>
+     <height>41</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QPushButton" name="home_add_workout_button_3">
-      <property name="styleSheet">
-       <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Personal Details</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="home_add_workout_button_2">
-      <property name="styleSheet">
-       <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Workouts</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="home_add_workout_button_4">
-      <property name="styleSheet">
-       <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Goals</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>30</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="QPushButton" name="home_save_button">
-      <property name="styleSheet">
-       <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Save</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="home_open_button">
-      <property name="styleSheet">
-       <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
-      </property>
-      <property name="text">
-       <string>Open </string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Workouts</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="home_add_workout_button_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Personal Details</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="home_add_workout_button_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Goals</string>
+   </property>
   </widget>
  </widget>
  <tabstops>
   <tabstop>home_add_workout_button</tabstop>
   <tabstop>home_create_button</tabstop>
   <tabstop>home_clear_button</tabstop>
+  <tabstop>home_save_button</tabstop>
   <tabstop>home_open_button</tabstop>
  </tabstops>
  <resources/>

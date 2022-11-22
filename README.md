@@ -1,5 +1,9 @@
 # Workout Visualizer
 
+## What is this?
+
+This application is intended for those who don't want to bother with excel when creating there workout plans. The application has an easy-to-use GUI which allows for additions of workouts and there exercises. On creation, an Excel document will be outputted with auto formated workouts and exercises. 
+
 ## Running as EXE
 
 The updated application exe can be found in the __dist__ folder.
